@@ -10,6 +10,11 @@ const fetchArticles = async () => {
 
 const Articles = () => {
   const { data: articles } = useSWR('@articles', fetchArticles);
+  const articlesIsEmpty = articles.length === 0;
+
+  if (articlesIsEmpty) {
+    return <p>Articles list is empty</p>;
+  }
 
   return (
     <ol>
@@ -25,6 +30,7 @@ const App = () => {
     <SWRConfig
       value={{
         suspense: true,
+        dedupingInterval: 0,
       }}
     >
       <div>
