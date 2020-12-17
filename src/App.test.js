@@ -1,15 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import App from './App';
-import data from './articles.json';
+import { server } from './mocks/server';
 
-beforeAll(() => jest.spyOn(window, 'fetch'));
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 test('renders page articles', async () => {
-  window.fetch.mockResolvedValue({
-    ok: true,
-    json: async () => data,
-  });
-
   render(<App />);
   expect(screen.getByText(/List of articles/i)).toBeInTheDocument();
 
